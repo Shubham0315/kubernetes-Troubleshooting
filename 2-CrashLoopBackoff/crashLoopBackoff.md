@@ -56,7 +56,11 @@
 
 <img width="779" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/ad1d9f91-6e3e-4db1-aa2a-20f8a816d619">
 
-2. 
+2. Liveness Probe
+
+- Here the yml file is same just liveness probe is added.
+- There are 2 probes in K8S :- liveness and readiness.
+- Liveness probe :- Similar to LB concept
 
 
 
