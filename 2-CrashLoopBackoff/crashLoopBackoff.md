@@ -33,4 +33,19 @@
 5. Bugs & Exceptions
 - Bugs in the application code, such as unhandled exceptions or segmentation faults, can cause the application to crash. For instance, if the application tries to access a null pointer or fails to catch and handle an exception correctly, it might terminate unexpectedly. Kubernetes, detecting the crash, will restart the container, but if the bug is triggered each time the application runs, this leads to a repetitive crash loop.
 
+# Practical Demo
+
+- Suppose, in dockerfile instead of app.py in entrypoint we've defined app1.py. After execution our pod will go to container creating state. Then it will go to error state instead of running state. Then pod will get crashed. Again pod will try to restart and cycle continues.
+
+- Now build image with improper entrypoint :- docker build -t shubham0315/crashlooptest:v1 .
+
+<img width="766" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/79020ebb-253b-43ed-a848-32a2c4047a9f">
+
+- Now push the image to dockerhub :- docker push shubham315/crashlooptest:v1
+
+<img width="774" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/02b18041-4086-40b8-bb46-5782618fc8e2">
+
+
+
+
 
