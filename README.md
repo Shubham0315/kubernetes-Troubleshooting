@@ -33,14 +33,16 @@
 # Practical demo for Image Pull Backoff
 
 1. Write yml file to create deployment (Refer from internet)
-- <img width="773" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/c2ccf5b0-c672-4616-98ad-f8f49b02d01d">
-- <img width="695" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/02e11091-2314-4c9e-af6f-fb15bc21bc6c">
+   <img width="773" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/c2ccf5b0-c672-4616-98ad-f8f49b02d01d">
+
+   <img width="695" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/02e11091-2314-4c9e-af6f-fb15bc21bc6c">
 - We can check container/pod creation using :- kubectl get pods -w (watch continuously and report status)
 
 2. As the Image is valid and existing, delete the created deployment
 - Now edit yml file and change "nginx" to "nginy"
 - Again apply the deployment which gets created but when we do "kubectl get pods -w", we get below
-- <img width="778" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/bed9a701-5348-4d7f-bc6c-e677b7f8f596">
+
+   <img width="778" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/bed9a701-5348-4d7f-bc6c-e677b7f8f596">
 - As we can check, ErrImagePull gets eventually transformed to ImagePullBackoff.
 
 3. ImagePullBackoff in Private repository
@@ -77,9 +79,9 @@
 <img width="529" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/60689bea-2281-428d-b20f-408b0e5e3276">
 - Still we get ImagePullBackoff error as we havent configured our dockerhub username in yml
 
-<img width="784" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/6ca4afd3-f8be-4247-8cdb-2f6f056748dc">
+   <img width="784" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/6ca4afd3-f8be-4247-8cdb-2f6f056748dc">
+   
 - Now if we check and watch pods, we get they're getting created.
-- 
 
 
 
