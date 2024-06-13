@@ -35,6 +35,8 @@
 
 # Practical Demo
 
+1. Wrong Command Crashloop 
+
 - Suppose, in dockerfile instead of app.py in entrypoint we've defined app1.py. After execution our pod will go to container creating state. Then it will go to error state instead of running state. Then pod will get crashed. Again pod will try to restart and cycle continues.
 
 - Now build image with improper entrypoint :- docker build -t shubham0315/crashlooptest:v1 .
@@ -44,6 +46,18 @@
 - Now push the image to dockerhub :- docker push shubham315/crashlooptest:v1
 
 <img width="774" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/02b18041-4086-40b8-bb46-5782618fc8e2">
+
+- Now we've **"wrong-cmd-crashloop.yml"**. Edit our docker registry name and apply the deployment to create one. Now we can see the image/pod gets into crashLoopBackoff state
+
+<img width="782" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/f0dc1630-7bbf-43cf-8c34-e056b7cc432b">
+
+- To fix this, change the dockerfile entrypoint to correct one and again build then push image to dockerhub changing image version (v1 to v2).
+- After build and push, go to deployment file and chage version there also. Now apply the deployment, we can see container from error status to running state.
+
+<img width="779" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/ad1d9f91-6e3e-4db1-aa2a-20f8a816d619">
+
+2. 
+
 
 
 
