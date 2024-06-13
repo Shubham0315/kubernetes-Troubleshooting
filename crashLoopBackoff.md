@@ -15,3 +15,5 @@
 - **BackoffDelay** :- When K8S tries to restart, K8S will try to restart pod after 10 sec. Next time it will restart in incremental manner increasing delay.
 
 - **CrashLoppBackoff** :- Our K8S pod is crashed and its happening again and again so pod is getting crashed multile times in a loop. And K8S is trying to restart the pod using Backoff Delay
+
+- Note:- CrashedLoopBackoff doesn't happen due to one single error. There can be multiple reasons
