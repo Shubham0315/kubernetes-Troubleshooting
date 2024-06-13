@@ -83,6 +83,7 @@
 - Now add secret to yml file and reapply deployment
 
 <img width="529" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/60689bea-2281-428d-b20f-408b0e5e3276">
+
 - Still we get ImagePullBackoff error as we havent configured our dockerhub username in yml
 
 - <img width="784" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/6ca4afd3-f8be-4247-8cdb-2f6f056748dc">
