@@ -16,6 +16,8 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.14.2
+        image: shubham315/nginx-image-demo:v1
         ports:
         - containerPort: 80
+      imagePullSecrets:
+      - name: demo
