@@ -52,26 +52,38 @@ Bugs & Exceptions
 
 1. Wrong Command Crashloop 
 
-- Suppose, in dockerfile instead of app.py in entrypoint we've defined app1.py. After execution our pod will go to container creating state. Then it will go to error state instead of running state. Then pod will get crashed. Again pod will try to restart and cycle continues.
+- Suppose we've simple python app given by developer and inside which we've file named app.py
+
+![image](https://github.com/user-attachments/assets/e78a98b5-45e0-464f-912f-d8ceed20bd5e)
+
+- Suppose, in dockerfile's entrypoint instead of app.py in entrypoint we've defined app1.py. After execution our pod will go to container creating state. Then it will go to error state instead of running state. Then pod will get crashed. Again pod will try to restart and cycle continues.
 
 ![image](https://github.com/user-attachments/assets/f5079281-aa4a-4a92-b507-bacddd24ed7e)
 
-- Now build image with improper entrypoint :- docker build -t shubham0315/crashlooptest:v1 .
+- No first build the dockerfile and push to dockerhub and use deployment.yml to apply to K8S cluster
+- Now build image with improper entrypoint :- **docker build -t shubham0315/crashlooptest:v1 .**
 
 <img width="766" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/79020ebb-253b-43ed-a848-32a2c4047a9f">
 
-- Now push the image to dockerhub :- docker push shubham315/crashlooptest:v1
+- Now push the image to dockerhub :- **docker push shubham315/crashlooptest:v1**
 
 <img width="774" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/02b18041-4086-40b8-bb46-5782618fc8e2">
 
 - Now we've **"wrong-cmd-crashloop.yml"**. Edit our docker registry name and apply the deployment to create one. Now we can see the image/pod gets into crashLoopBackoff state
+- Command :- **kubectl apply -f wrong-CLI-args.yml**
+- Intially it came into "containerCreating" state, then went to "Error" state then again "CrashLoopBackoff" and again "error"
 
 <img width="782" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/f0dc1630-7bbf-43cf-8c34-e056b7cc432b">
 
-- To fix this, change the dockerfile entrypoint to correct one and again build then push image to dockerhub changing image version (v1 to v2).
-- After build and push, go to deployment file and chage version there also. Now apply the deployment, we can see container from error status to running state.
+- To fix this, change the dockerfile entrypoint to correct one and again build then push image to dockerhub changing image version (v1 to v2 while passing CLI command tag where V1 is crashLoopBackoff and V2 is actual).
+- After build and push, go to deployment file and change version there also (tag to V2). Now apply the deployment, we can see container from error status to running state.
 
 <img width="779" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/ad1d9f91-6e3e-4db1-aa2a-20f8a816d619">
+
+- While creating actual running container, when we apply perfect yml, we can see how many times image went into crashLoopBackoff (restarts 4 in below SS) and previous pods getting terminated which had errors. Then new pod gets into running status
+
+![image](https://github.com/user-attachments/assets/31b803b4-d42e-40c1-822e-4d671c35490e)
+
 
 2. Liveness Probe
 
