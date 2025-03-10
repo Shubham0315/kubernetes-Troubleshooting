@@ -28,13 +28,13 @@ b. **Private DockerHub Images**
 **What is Backoff?**
 -
 - It means Backoff Delay.
-- If we've provided invalid image name, K8S wont throw ImagePullBackoff error directly. It throws "**ErrorImagePull**". After this error, K8S will wait for sometime as this error can be due to Network Issue as well. Due to Network issue, kubelet which is running our pod, might not be able to pull the image or there can be some intermittent issues. So K8S wait for sometime and try one more time. Again it will wait and try one more time. Tis is continuous process where K8S will incrementally increase the wait time. (Initially 5 sec, 20 sec and till 5 mins).
+- If we've provided invalid image name in deployment.yml, K8S wont throw ImagePullBackoff error directly. It throws "**ErrorImagePull**". After this error, K8S will wait for sometime as this error can be due to Network Issue as well. Due to Network issue, kubelet which is running our pod, might not be able to pull the image or there can be some intermittent issues. So K8S waits for sometime and try one more time. Again it will wait and try one more time. This is continuous process where K8S will incrementally increase the wait time (Initially 5 sec, 20 sec and till 5 mins) to pull image.
 - So K8S will not just attempt to pull container image once, it will attempt multiple times and each time it will add delay incrementally and try to pull the image. This process is called as "_**Backoff Delay**_"
 
 - That's why the error is called "**ImagePullBackoff**"
 
-- In short, the error is related to pulling image on your K8S cluster if image is invalid, non-existent, private.
-- Initial error thrown by K8S is **ErrImagePull** and later it will try to pull image with incremental delay. Then the error is converted to "**ImagePullBackoff**"
+- In short, the error is related to pulling image on your K8S cluster if image is invalid, non-existent, private images where we dont have access.
+- Initial error thrown by K8S is **ErrorImagePull** and later it will try to pull image with incremental delay. Then the error is converted to "**ImagePullBackoff**"
 
 # Practical demo for Image Pull Backoff
 
