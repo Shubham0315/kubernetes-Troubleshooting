@@ -51,7 +51,7 @@ Bugs & Exceptions
 # Practical Demo
 
 1. Wrong Command Crashloop 
-
+-
 - Suppose we've simple python app given by developer and inside which we've file named app.py
 
 ![image](https://github.com/user-attachments/assets/e78a98b5-45e0-464f-912f-d8ceed20bd5e)
@@ -86,10 +86,42 @@ Bugs & Exceptions
 
 
 2. Liveness Probe
-
+-
 - Here the yml file is same just liveness probe is added.
+
+![image](https://github.com/user-attachments/assets/4d93080b-0132-4a6d-bee5-7e0dfda32731)
+
 - There are 2 probes in K8S :- liveness and readiness.
-- Liveness probe :- Similar to LB concept
+- Liveness probe is Similar to LB concept
+- How LB understand targets where it has to forward the request are healthy or not? LB will continuously check health of VM, if good, the user request is forwarded to the VM.
+- If we've multiple VMs and both are in healthy state and user requests something, it will go to VMs depending on the algorithm we've chosen.(Round robin)
+- LB have a way to check health of its targets.
+
+- Similarly in K8S, kubelet verifies if pod is healthy or not if we configure "Liveness Probe". If liveness probe passes, pod is healthy, if fails pod is unhealthy.
+- If liveness probe is failing, kubelet will immediately restart our pod. If it doesnt restart and it gets customer request, customer will not receive any response as pod/app is hung.
+- To avoid this, we can configure **Liveness Probe** for our pod which acts as health check. Kubelet checks this health using parameters or script provided to it.
+
+- In our yml, we just added liveness probe and ask it to check the file "/tmp/healthy". If the file does not exist, liveness probe will fail and then kubelet will try to restart it
+
+- Firstly apply the created deployment :- **kubectl apply -f liveness-probe-crashloop.yml**
+- Again our cycle starts :- container creating - Container moves to running status - In running status after 5 secs liveness probe will trigger - liveness probe will fail - kubelet will restart our container - again goes to container creating state
+- So our container goes to "**crashLoopBackoff**"
+
+- As we've provided periodSeconds as 1, after 1 sec it will restart the pod after getting into running state. Then it will wait for probe for 5 secs to get executed.
+- Eventually after some iterations we see status of pod as "crashLoopBackoff"
+
+![image](https://github.com/user-attachments/assets/d5b89d2f-1308-416b-b4ac-bffb586ca924)
+
+- In the real environment, we'll not create liveness probe, we get it from dev. This is because in liveness probe we get API of kubelet to hit, context path. So when kubelet tries to hit API, it will receive response as 200 or 500, depending on which kubelet understand it has to restart pod or not.
+
+![image](https://github.com/user-attachments/assets/37bf2dd2-0077-492f-b4be-c270d7eee188)
+
+Liveness probe is used to check if our pod is healthy or not
+-
+- Readiness probes is used to check if our pod is ready to receive traffic or not
+-
+- 
+
 
 
 
