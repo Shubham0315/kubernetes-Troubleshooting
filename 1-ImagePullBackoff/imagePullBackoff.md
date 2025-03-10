@@ -2,9 +2,9 @@
 
 # 1. ImagePullBackoff Error
 
-- When we start with K8S, firstly we deploy pod onto our K8S cluster. ImagePullVackoff is related to this task.
+- When we start with K8S, firstly we deploy pod onto our K8S cluster. ImagePullBackoff is related to this task.
 - This error is related to pulling container image on K8S cluster.
-- When we deploy our app on K8S cluster, it can be using pod, deployments, stateful states, daemon set or replica sets. Here we can run into this error.
+- When we deploy our app on K8S cluster, it can be using pod, deployments, stateful states, daemon set or replica sets where we deploy applications as container image on K8S cluster. Here we can run into this error.
 - This can be arised due to 2 scenarios :-
 
   a.  Invalid image name or non-existent image name
@@ -20,7 +20,7 @@
 - To check by which scenario we landed into this error, there are ways :- Use describe command or Use events command.
 
 **What is Backoff?**
-
+-
 - It means Backoff Delay.
 - If we've provided invalid image name, K8S wont throw ImagePullBackoff error directly. It throws "**ErrorImagePull**". After this error, K8S will wait for sometime as this error can be due to Network Issue as well. Due to Network issue, kubelet which is running our pod, might not be able to pull the image or there can be some intermittent issues. So K8S wait for sometime and try one more time. Again it will wait and try one more time. Tis is continuous process where K8S will incrementally increase the wait time. (Initially 5 sec, 20 sec and till 5 mins).
 - So K8S will not just attempt to pull container image once, it will attempt multiple times and each time it will add delay incrementally and try to pull the image. This process is called as "_**Backoff Delay**_"
