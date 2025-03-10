@@ -54,6 +54,8 @@ Bugs & Exceptions
 
 - Suppose, in dockerfile instead of app.py in entrypoint we've defined app1.py. After execution our pod will go to container creating state. Then it will go to error state instead of running state. Then pod will get crashed. Again pod will try to restart and cycle continues.
 
+![image](https://github.com/user-attachments/assets/f5079281-aa4a-4a92-b507-bacddd24ed7e)
+
 - Now build image with improper entrypoint :- docker build -t shubham0315/crashlooptest:v1 .
 
 <img width="766" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/79020ebb-253b-43ed-a848-32a2c4047a9f">
