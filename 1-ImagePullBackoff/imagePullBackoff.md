@@ -12,7 +12,7 @@
 
 * _**Invalid Image**_ :- If we want to deploy nginx application on K8S cluster, and we've taken yml from official K8S docs. But while creating pod/deployment using yml apply, we mistyped "**nginx**" as "**nginy**", it gets invalid image name as no such image will be there on dockerhub. So we get above error.
 
-* _**Non-existent Image**_ :- Similarly in our organization suppose there is image "foo:1.1.1" (image with tag) but mistakenly the image was deleted but there is deployment created means we have deployed application which is pointing towards **non-existent image**. So we get above error.
+* _**Non-existent Image**_ :- Similarly in our organization suppose there is image "foo:1.1.1" (image with tag) but mistakenly the image was deleted but there is deployment created means we have deployed application which is pointing towards **non-existent container image**. So we get above error.
 
 * We're trying to deploy application as container image but image is private. In dockerhub, most of the images are public to pull or push. Some images are private that noone without owner's authorization can download the image. Here also we can run into "**ImagePullBackoff**" error. To deploy the private image, we've to use concept of "**ImagePullSecret**".
 * Here, we can create nginx-deploy.yml. There create ImagePullSecret and pass name of secret which stores docker credentials
