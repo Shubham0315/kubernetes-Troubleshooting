@@ -38,22 +38,33 @@ b. **Private DockerHub Images**
 
 # Practical demo for Image Pull Backoff
 
+- To check minikube status
+
+![image](https://github.com/user-attachments/assets/9e7917f0-d17d-4cc4-8b59-00520694af4f)
+
 1. Write yml file to create deployment (Refer from internet)
    <img width="773" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/c2ccf5b0-c672-4616-98ad-f8f49b02d01d">
 
    <img width="695" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/02e11091-2314-4c9e-af6f-fb15bc21bc6c">
 - We can check container/pod creation using :- kubectl get pods -w (watch continuously and report status)
 
+![image](https://github.com/user-attachments/assets/bf36f062-69d1-4c1d-b93b-97dc3c55c798)
+
 2. As the Image is valid and existing, delete the created deployment
 - Now edit yml file and change "nginx" to "nginy"
+
+![image](https://github.com/user-attachments/assets/867cf0af-3602-402c-8e2a-a4f42624528c)
+
 - Again apply the deployment which gets created but when we do "kubectl get pods -w", we get below
 
    <img width="778" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/bed9a701-5348-4d7f-bc6c-e677b7f8f596">
-- As we can check, ErrImagePull gets eventually transformed to ImagePullBackoff.
+- As we can check, ErrImagePull gets eventually transformed to ImagePullBackoff like below
+
+![image](https://github.com/user-attachments/assets/6dc19139-258f-4e5c-af72-1f109b428e05)
 
 3. ImagePullBackoff in Private repository
 - Firstly, create container image on dockerhub repository and make the repository private.
-- Pull image :- docker pull nginx:1.14.2
+- Pull image :- **docker pull nginx:1.14.2**
 
 <img width="773" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/4c826a10-a74e-4150-b52f-468d7257f5cf">
 
