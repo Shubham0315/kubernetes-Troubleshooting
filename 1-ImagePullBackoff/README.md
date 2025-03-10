@@ -68,11 +68,11 @@ b. **Private DockerHub Images**
 
 <img width="773" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/4c826a10-a74e-4150-b52f-468d7257f5cf">
 
-- Now to tag image :- docker tag nginx:1.14.2 shubham315/nginx-image:v1
+- Now to tag image :- **docker tag nginx:1.14.2 shubham315/nginx-image:v1**
 
 <img width="779" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/b820e4b0-1bdb-449c-8de0-bcfd34299a52"> 
 
-- Now to push image to dockerhub. So it creates "nginx-image" repo on our dockerhub :- docker push shubham315/nginx-image:v1
+- Now to push image to dockerhub. So it creates "nginx-image" repo on our dockerhub :- **docker push shubham315/nginx-image:v1**
 
 <img width="781" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/b075387c-80bd-480e-abf9-01fab5662219">
 
@@ -80,28 +80,33 @@ b. **Private DockerHub Images**
 
 - Now use the image name in deployment file, change image name to "nginx-image:v1" which is pushed to dockerhub as private.
 
+<img width="698" alt="image" src="https://github.com/user-attachments/assets/9252ac44-65d3-4d69-855d-b4901bd5b7cf" />
+
 <img width="718" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/0ed27bd1-1099-401d-8a33-2029b805e79c">
 
 - Now delete previos deployment and try to reapply. We again get ErrImagePull followed by ImagePullBackoff as our repo is private
 
 <img width="780" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/e8a96839-5c10-4c05-8f25-7d98bfd37309">
 
-- Here kubelet run pods when it tries to pull image, kubelet check access to oull from container registry. If it doesn't find access, it throws error.
+- Here kubelet run pods when it tries to pull image, kubelet check access (if it can get user and password) to pull from container registry. If it doesn't find access, it throws error.
 
 # Troubleshooting ImagePullBackoff and ErrImagePull
 
 - We can create secret for this using below command
-- Command :-  kubectl create secret docker-registry demo --docker-server=<your-registry-server> --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>
+- Command :-  **kubectl create secret docker-registry demo --docker-server=<your-registry-server> --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>**
+  - Type is "docker-registry", name of secret is demo, 
 - Docker server name will be :- https://index.docker.io/v1/  (If we're using dockerhub)
 
 <img width="779" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/4605d8cb-9452-4ede-a045-a7054f1668ef">
 
 - Secret is of type dockerconfigjson
-- Now add secret to yml file and reapply deployment
+- Now add secret to deployment.yml file and reapply deployment
 
 <img width="529" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/60689bea-2281-428d-b20f-408b0e5e3276">
 
 - Still we get ImagePullBackoff error as we havent configured our dockerhub username in yml
+
+![image](https://github.com/user-attachments/assets/cae4f734-8ee6-4bfa-ac56-40ad035ab7ff)\
 
 - <img width="784" alt="image" src="https://github.com/Shubham0315/kubernetes-Troubleshooting/assets/105341138/6ca4afd3-f8be-4247-8cdb-2f6f056748dc">
    
