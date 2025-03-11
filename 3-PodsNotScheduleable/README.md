@@ -46,9 +46,10 @@
 ![image](https://github.com/user-attachments/assets/61745733-bfc8-4357-b309-69dfd498b833)
 
 -----------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------
 
 #1. Node Selector
-
+-
 - Node selector helps us implement whcih pod can be executed on which node.
   - If our application will only work on node of windows
   - So we'll go to node and add label for the node
@@ -83,3 +84,40 @@
 
 ![image](https://github.com/user-attachments/assets/2704d484-756c-474e-9cb1-7a4220851d32)
 
+-----------------------------------------------------------------------------------------------------------------------------------
+
+#2 Node Affinity
+-
+- With node selector we force the scheduler to schedule the pod only if you find the right node (hard match). If we dont find the required processor on node, node selector tells scheduler not to schedule pod on that node
+- Node affinity feature has 2 options :- Preferred and Required
+  - **Required** works almost as node selector where we tell scheduler to schedule only if node is matching 100% requirement
+  - **Preferred** option tries to find exact same node where label is provided and if found use that node. If not, we can schedule it anywhere.
+ 
+- With node selector we're doing hard selection. With affinity we provide more flexibility to scheduler if preferred option is used.
+
+- Write yml file like below
+
+![image](https://github.com/user-attachments/assets/2bd68f44-3cd3-4be9-9509-caad07b83918)
+
+  - Here we've changed replica to 1 as its preferred scheduling. Also we've added affinity related configuration which is standard one.
+  - Here we've used "preferredDuringSchedulingIgnoreDuringExecution". Prefer a node which has label where key as "**node-arch**" where arch value is "**windows**"
+
+- Apply the yml :- **kubectl apply -f affinity-preferred-scheduler.yml**
+- Check pods. Pods are running. That pod gets scheduled on any node as we've used "preferred" scheduling
+
+![image](https://github.com/user-attachments/assets/12153756-c8cc-4ae9-8906-601c880e49d8)
+
+- If we change the yml to key as "node-name" and value as "arm-worker" which was configured previously on our cluster and apply the yml
+  - This time pod gets scheduled on "multi-worker" which has configuration named "arm-worker". Here K8S found node which is our preferred config which is already available and schedules pod there
+ 
+- If we change it to "reuired", only instead of "preferredDuringSchedulingIgnoredDuringExecution", we've to enter "requiredDuringSchedulingIgnoredDuringExecution" and it gets scheduled on 100% match pod.
+
+Difference between Node selector and node affinity
+-
+- Although the features are little similar, node affinity grants more granular level of configuration or more flexibility for devops engineer. It checks for preferred configuration if not found it will schedule anywhere
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+#3 Taints
+-
+- 
