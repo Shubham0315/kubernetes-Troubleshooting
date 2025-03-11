@@ -120,4 +120,57 @@ Difference between Node selector and node affinity
 
 #3 Taints
 -
-- 
+- Till now in node selector and affinity, we're talking from pod POV.
+- If we've K8S nodes and we dont want to schedule anything there, any pod should not be scheduled. This requirement can be due to upgrades
+- If we've prod K8S cluster with specific version having 3 worker nodes. We've to upgrade the K8S cluster to new version. We cannot upgrade all worker nodes at once.
+  - In this case we drain particular node where we'll move all pods running on it to different node, then we make that node unscheduleable and idle. Kube scheduler will not schedule anythin on this node.
+  - Then we can bring this node down, upgrade it and remove unscheduleable status and make newer version up and running
+ 
+- There are multiple ways of doing K8S upgrades.
+
+- Here taints is used. It is a label or stamp which we apply to node which explains kube scheduler to make node **unscheduleable** or make it not **NoExecutable** status or we can do **prefereNoSchedule** in node affinity
+- 3 types of taints
+  - **No Schedule** :- Node will go to non scheduleable status
+  - **No Execute** :- Dangerous. All pods on our node will immediately stopped working
+  - **PreferredNoSchdule** :- If we've node whose performance is declining (CPU, memory issues), node not behaving as expected, we can use this taint. It is worst case scenario
+
+- To taint use command :- **kubectl taint nodes node1 key1=value1:NoSchedule**
+  - No schedule is the taint we're applying to one of the nodes and key value pair will come into picture when we do tolerations
+ 
+![image](https://github.com/user-attachments/assets/9377303e-b4b4-499a-8eb6-ba78a0ef4943)
+
+- Now edit our master node :- kubectl edit node $master
+  - We can see this node already has taint named "NoSchedule". This is because usually we dont schedule pods on control plane. So all our pods go to worker nodes
+
+![image](https://github.com/user-attachments/assets/28dcad94-0111-4ffb-8e17-90a2ba0ebab5)
+
+- If we make all worker nodes tainted as "NoSchedule" except one of the worker noded, our pods should get scheduled on that node only
+  - So when we apply the deployment and get pods we can see all pods get scheduled on that remaining not which is not tainted.
+ 
+- Using taints we can decide behavior of our node during upgrades and make node as unscheduled and upgrade version of K8S
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+#4 Tolerations
+-
+- It is exception which is given to certain pods.
+- Lets say we've 3 nodes in NoSchedule status but for some reason we want certain high priority pods which are critical for prod and performance
+- To these pods we can add toleration or exception we can still run on NoSchehule or any tainted loop.
+- In any of the states we can still run pods if we've tolerations set on that pod.
+
+- While tainting node, we used key value pair for tolerations
+  - NoSchedule is effect on node but if we still add tolerations to pods which're matching these key-value pairs of our effect, scheduler will understand there is pod which has tolerations matching key value pair, we can still schedule resources on that node
+ 
+- Create yaml and add tolerations field there. We can put any values for key and value
+
+![image](https://github.com/user-attachments/assets/0e0609cc-d328-4e91-a59d-4bc390852318)
+ 
+- Apply the yml and make all node unscheduleable (taint them) :- **kubectl apply -f tolerations.yml**
+  - Ideally all nodes are unscheduled so nothing is unavlailable
+  - But check to get pods. One-one copy is running on worker1, worker2 and worker3
+  - This is due to pods are tolerated. Tolerations help you schedule pods.
+ 
+![image](https://github.com/user-attachments/assets/86a08dba-cd6c-4857-9aa6-c9815ad76cd5)
+
+
+
