@@ -50,7 +50,7 @@ Bugs & Exceptions
 
 # Practical Demo
 
-1. Wrong Command Crashloop 
+#1. Wrong Command Crashloop 
 -
 - Suppose we've simple python app given by developer and inside which we've file named app.py
 
@@ -85,7 +85,7 @@ Bugs & Exceptions
 ![image](https://github.com/user-attachments/assets/31b803b4-d42e-40c1-822e-4d671c35490e)
 
 
-2. Liveness Probe
+#2. Liveness Probe
 -
 - Here the yml file is same just liveness probe is added.
 
@@ -118,13 +118,40 @@ Bugs & Exceptions
 
 Liveness probe is used to check if our pod is healthy or not
 -
-- Readiness probes is used to check if our pod is ready to receive traffic or not
+
+Readiness probes is used to check if our pod is ready to receive traffic or not
 -
 - 
 
+#3. Out of Memory Crashloop
+-
+- We add resources section in the yml file instead of liveness probe section.
 
+![image](https://github.com/user-attachments/assets/0cd1ac35-ef8d-421a-bb2e-6eff98d35d9e)
 
+- We've single K8S cluster which we're managing within multiple teams. As devops engineer,suppose when we've K8S cluster with multiple namespaces with each being used by different projects. And we've 3 nodes with 60CPU and 60GB RAM.
+- While running pods, we didnt provide any limitations for the resources a pod can consume. What if our 1st of the 5 namespaces consume all 60GB RAM and 60 CPUs. Although rest 4 namepaces have pods on their cluster but while scheduling pods, they wont get scheduled as 1st namespace consumed all resources of cluster.
+- This might happen due to pod leaking memory or any other issue consuming memory.
+- As devops engineer we've to distribute resources on K8S cluster between namespaces as well as between pods
 
+- So at namespace level, we'll configure resources quota. For pods, we'll create requests and limits
+- Here we've provided just 25 (1000 means 1 CPU)
 
+![image](https://github.com/user-attachments/assets/05fe1eaa-df4e-4fe9-8a88-b7f8879fcb71)
+
+- When pod is starting, application doesnt need resoureces so it starts.
+
+- Now apply the yml :- kub**ectl apply -f outOfMemory-crashloop.yml**
+- Pod goes to running state and then gets crashed
+
+- If our pod is expected to take not more than 1GB or 1CPU, dont increase it if pod is not behaving properly. Developers should identify the root cause on why the pod is taking more resources than expected. Inform dev container is running but moved to crashLoopBackoff.
+
+![image](https://github.com/user-attachments/assets/21f1ba4a-2840-48ac-885b-5fe43c049d13)
+
+- OOMKilled means the resources provided for pod are not enough or pod is taking more resources than expected. In both cases ask dev.
+
+- After OOMKilled, we get crashLoopBackoff error
+
+![image](https://github.com/user-attachments/assets/1d9bb7bd-9ff3-4a53-a86f-ca788dbf1d0e)
 
 
