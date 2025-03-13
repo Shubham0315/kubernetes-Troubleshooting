@@ -30,6 +30,8 @@ spec:
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: ebs
+      #storageClassName: NETAPP
+
       resources:
         requests:
           storage: 1Gi
