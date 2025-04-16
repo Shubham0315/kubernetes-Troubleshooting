@@ -1,3 +1,19 @@
+Persistent Volume
+-
+- PV is a piece of storage in cluster that has been provisioned by administrator or dynamically by a StorageClass
+- It like physical or cloud disk made available to cluster
+
+Persistent Volume Claims
+-
+- PVC is a request for storage by user
+- It specifies how much storage and what access mode is needed (RW, ReadOnly)
+- K8S then tries to match PVC with available PV that satisfies the claim
+
+  - Admin creates PV
+  - Dev/User creates PVC to request storage
+  - K8S binds PVC to appropriate PV automatically
+  - Pod uses PVC to mount volume and access storage
+
 # K8S Troubleshooting with Stateful Sets and Persistent Volumes
 
 - Using JIRA bug request, developer reports issue to devops engineer where he mentions one of the stateful sets apps is working fine on AWS EKS but not working on other cloud platforms or local minikube clusters.
