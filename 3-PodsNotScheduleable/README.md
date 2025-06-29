@@ -3,7 +3,7 @@
 - These things help devops engineers like which pods've to be delpoyed on which nodes, which nodes should avoid certain pods to be scheduled on them.
 - If these things are not implemented properly, it will lead pods to go into non scheduleable state which can create downtime for customers
 
-- For this concept we need multi-node K8S cluster (master and worker). Use KIND or K3D for this. KIND helps our entore K8S cluster to run in docker container. Also as our K8S cluster is running inside container, they're very lightweight and we can spin up many K8S clusters and with large no of nodes
+- For this concept we need multi-node K8S cluster (master and worker). Use KIND or K3D for this. KIND helps our entire K8S cluster to run in docker container. Also as our K8S cluster is running inside container, they're very lightweight and we can spin up many K8S clusters and with large no of nodes
 - Below K8S cluster is with 4 nodes.
 - To get docker running, use docker desktop
 
